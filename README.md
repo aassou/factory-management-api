@@ -1,6 +1,6 @@
-# ImmoERP Migration: API
+# Factory Management: API
 
-This is a Symfony / React project, where we are working on transforming an existing project build with legacy code (PHP) to a modern web application using Symfony 5.3 and React 17.0.2.
+This is a Symfony based project API, designed to manage small industrial factories.
 
 
 ## Requirements
@@ -10,10 +10,10 @@ This is a Symfony / React project, where we are working on transforming an exist
 ### 1. Clone the project
 ```bash
 # Clone this repository
-$ git clone https://gitlab.com/aassou/immoerp-api-v1.git
+$ git clone https://gitlab.com/aassou/factory-management-api.git
 
 # Go into the repository
-$ cd immoerp-api-v1
+$ cd factory-management-api
 
 ```
 
