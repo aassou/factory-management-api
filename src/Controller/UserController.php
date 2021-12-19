@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Exception\UserExistsException;
 use App\Exception\UserNotFoundException;
 use App\Manager\UserManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Doctrine\ORM\NonUniqueResultException;
-use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +15,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use App\Entity\User;
 
 /**
- * Class UserController
+ * UserController
+ * @author Abdelilah Aassou <email: aassou.abdelilah@gmail.com>
  * @package App\Controller
  */
 class UserController extends AbstractController
@@ -50,11 +52,13 @@ class UserController extends AbstractController
      * )
      * @OA\Tag(name="user")
      * @Security(name="Bearer")
+     * @return JsonResponse
      */
     #[Route('/api/user', name: 'user_index', methods: ['GET'])]
+    #[Cache(smaxage: 10)]
     public function index(): JsonResponse
     {
-        return $this->json(['users' => $this->userManager->readAll()]);
+        return $this->json(['users' => "Welcome!"]);
     }
 
     /**
@@ -99,6 +103,19 @@ class UserController extends AbstractController
     }
 
     /**
+     * Get one user.
+     *
+     * This call get one user by id.
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a user by id",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=User::class, groups={"full"}))
+     *     )
+     * )
+     * @OA\Tag(name="user")
+     * @Security(name="Bearer")
      * @param int $id
      * @return JsonResponse
      * @throws UserNotFoundException
@@ -168,6 +185,8 @@ class UserController extends AbstractController
     }
 
     /**
+     * Get all users.
+     *
      * @return JsonResponse
      */
     #[Route('/api/user', name: 'get_all_users', methods: ['GET'])]
@@ -177,6 +196,19 @@ class UserController extends AbstractController
     }
 
     /**
+     * check token validity.
+     *
+     * This call checks the validity of token.
+     * @OA\Response(
+     *     response=200,
+     *     description="Checks token validity",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=User::class, groups={"full"}))
+     *     )
+     * )
+     * @OA\Tag(name="user")
+     * @Security(name="Bearer")
      * @return JsonResponse
      */
     #[Route('/api/checktoken')]

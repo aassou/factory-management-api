@@ -29,7 +29,7 @@ class ApartmentController extends AbstractController implements CrudControllerIn
     /**
      * @return JsonResponse
      */
-    #[Route('/', name: 'apartment_index', methods: ['GET'])]
+    #[Route('/api/apartment', name: 'apartment_index', methods: ['GET'])]
     public function index(): JsonResponse
     {
         $apartments = $this->apartmentManager->readAll();
@@ -41,7 +41,7 @@ class ApartmentController extends AbstractController implements CrudControllerIn
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/create', name:'apartment_create', methods: ['POST'])]
+    #[Route('/api/apartment/create', name:'apartment_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $apartment = $this->apartmentManager->create($data, $this->getUser()->getUsername());
@@ -54,7 +54,7 @@ class ApartmentController extends AbstractController implements CrudControllerIn
      * @return JsonResponse
      * @throws PropertyNotFoundException
      */
-    #[Route('/{id}', name:'apartment_get_one_by_id', methods: ['GET'])]
+    #[Route('/api/apartment/{id}', name:'apartment_get_one_by_id', methods: ['GET'])]
     public function read(int $id): JsonResponse {
         $apartment = $this->apartmentManager->read($id);
 
@@ -71,7 +71,7 @@ class ApartmentController extends AbstractController implements CrudControllerIn
      * @return JsonResponse
      * @throws PropertyNotFoundException
      */
-    #[Route('/{id}', name:'apartment_update', methods: ['PATCH'])]
+    #[Route('/api/apartment/{id}', name:'apartment_update', methods: ['PATCH'])]
     public function update(Request $request, int $id): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $apartment = $this->apartmentManager->update($data, $this->getUser()->getUsername(), $id);
@@ -88,7 +88,7 @@ class ApartmentController extends AbstractController implements CrudControllerIn
      * @return JsonResponse
      * @throws PropertyNotFoundException
      */
-    #[Route('/{id}', name:'apartment_delete', methods: ['DELETE'])]
+    #[Route('/api/apartment/{id}', name:'apartment_delete', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse
     {
         $this->apartmentManager->delete($id, $this->getUser()->getUsername());
@@ -100,7 +100,7 @@ class ApartmentController extends AbstractController implements CrudControllerIn
      * @param int $projectId
      * @return JsonResponse
      */
-    #[Route('/project/{projectId}', name: 'apartment_get_by_project_id', methods: ['GET'])]
+    #[Route('/api/apartment/project/{projectId}', name: 'apartment_get_by_project_id', methods: ['GET'])]
     public function readAllByProjectId(int $projectId): JsonResponse
     {
         $apartments = $this->apartmentManager->readAllByProjectId($projectId);

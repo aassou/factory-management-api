@@ -34,7 +34,7 @@ class ClientController extends AbstractController implements CrudControllerInter
     /**
      * @return JsonResponse
      */
-    #[Route('/', name: 'client_index', methods: ['GET'])]
+    #[Route('/api/client', name: 'client_index', methods: ['GET'])]
     public function index(): JsonResponse
     {
         $clients = $this->clientManager->readAll();
@@ -60,7 +60,7 @@ class ClientController extends AbstractController implements CrudControllerInter
      * @return JsonResponse
      * @throws ClientNotFoundException
      */
-    #[Route('/api/clients/{id}',name:'get_client',methods: ['GET'])]
+    #[Route('/api/client/{id}',name:'get_client',methods: ['GET'])]
     public function read(int $id): JsonResponse {
         $client = $this->clientManager->read($id);
         
@@ -95,6 +95,7 @@ class ClientController extends AbstractController implements CrudControllerInter
      * @param int $id
      * @return JsonResponse
      */
+    #[Route('/api/client', name: 'delete_client', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse
     {
         $this->clientManager->delete($id, $this->getUser()->getUsername());

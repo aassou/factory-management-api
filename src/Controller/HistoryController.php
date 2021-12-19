@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class  HistoryController
  * @package App\Controller
  */
-#[Route('/api/history', name: 'history_')]
 class HistoryController extends AbstractController implements CrudControllerInterface
 {
     /**
@@ -31,7 +30,7 @@ class HistoryController extends AbstractController implements CrudControllerInte
     /**
      * @return Response
      */
-    #[Route('/', name: 'history_index', methods: ['GET'])]
+    #[Route('/api/history/', name: 'history_index', methods: ['GET'])]
     public function index(): Response
     {
         $histories = $this->historyManager->readAll();
@@ -43,7 +42,7 @@ class HistoryController extends AbstractController implements CrudControllerInte
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/create', name: 'history_create', methods: ['POST'])]
+    #[Route('/api/history/create', name: 'history_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
         return $this->json([]);
@@ -53,7 +52,7 @@ class HistoryController extends AbstractController implements CrudControllerInte
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/{id}', name: 'history_get_one_by_id', methods: ['GET'])]
+    #[Route('/api/history/{id}', name: 'history_get_one_by_id', methods: ['GET'])]
     public function read($id): JsonResponse
     {
         return $this->json([]);
@@ -64,7 +63,7 @@ class HistoryController extends AbstractController implements CrudControllerInte
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/{id}', name: 'history_update', methods: ['PATCH'])]
+    #[Route('/api/history/{id}', name: 'history_update', methods: ['PATCH'])]
     public function update(Request $request, $id): JsonResponse
     {
         return $this->json([]);
@@ -74,7 +73,7 @@ class HistoryController extends AbstractController implements CrudControllerInte
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/{id}', name: 'history_delete', methods: ['DELETE'])]
+    #[Route('/api/history/{id}', name: 'history_delete', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse
     {
         return $this->json([]);
