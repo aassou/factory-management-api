@@ -17,7 +17,6 @@ use App\Entity\Apartment;
  */
 class ApartmentManager extends AbstractManager
 {
-
     use HistoryTrait;
 
     /**
@@ -50,7 +49,8 @@ class ApartmentManager extends AbstractManager
         $historyData = HistoryUtils::buildHistoryData(
             HistoryManager::ADD,
             Apartment::class,
-            ["status" => HistoryManager::SUCCESS, "label" => $apartment->getName()]);
+            ["status" => HistoryManager::SUCCESS, "label" => $apartment->getName()]
+        );
 
         $this->historyManager->create($historyData, $currentUserName);
 
