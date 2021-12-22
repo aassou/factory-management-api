@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Exception\CategoryNotFoundException;
 use App\Manager\CategoryManager;
 use App\Entity\Category;
+use Psr\Log\LoggerAwareInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,11 +31,18 @@ class CategoryController extends AbstractController implements CrudControllerInt
     private CategoryManager $categoryManager;
 
     /**
-     * @param CategoryManager $categoryManager
+     * @var Logger
      */
-    public function __construct(CategoryManager $categoryManager)
+    private Logger $logger;
+
+    /**
+     * @param CategoryManager $categoryManager
+     * @param Logger $logger
+     */
+    public function __construct(CategoryManager $categoryManager, Logger $logger)
     {
         $this->categoryManager = $categoryManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -121,6 +130,7 @@ class CategoryController extends AbstractController implements CrudControllerInt
         $category = $this->categoryManager->read($id);
 
         if (!$category) {
+            $this->logger->error(sprintf('Salam 3alikom %s', $id));
             throw new NotFoundHttpException(sprintf('Category with id: %s not found!', $id));
         }
 
@@ -167,8 +177,9 @@ class CategoryController extends AbstractController implements CrudControllerInt
     {
         $data = json_decode($request->getContent(), true);
         $category = $this->categoryManager->update($data, $this->getUser()->getUsername()(), $id);
-
+        dd($this->get('kernel'));
         if (!$category) {
+            $this->logger->error(sprintf('Salam 3alikom %s', $id));
             throw new NotFoundHttpException(sprintf('Category with id: %s not found!', $id));
         }
 

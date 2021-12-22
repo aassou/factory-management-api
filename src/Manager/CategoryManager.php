@@ -8,6 +8,7 @@ use App\Repository\CategoryRepository;
 use App\Trait\HistoryTrait;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Logger;
 
 /**
  * @class CategoryManager
@@ -18,13 +19,20 @@ class CategoryManager extends AbstractManager
     use HistoryTrait;
 
     /**
+     * @var Logger
+     */
+    private Logger $logger;
+
+    /**
      * @param EntityManagerInterface $entityManager
      * @param HistoryManager $historyManager
+     * @param Logger $logger
      */
-    public function __construct(EntityManagerInterface $entityManager, HistoryManager $historyManager)
+    public function __construct(EntityManagerInterface $entityManager, HistoryManager $historyManager, Logger $logger)
     {
         $this->entityManager = $entityManager;
         $this->historyManager = $historyManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -69,6 +77,7 @@ class CategoryManager extends AbstractManager
         $category = $repository->findOneBy(['id' => $id]);
 
         if (!$category) {
+            $this->logger->error(sprintf('Salam id: %s not found!', $id));
             throw new CategoryNotFoundException(sprintf('Category with id: %s not found!', $id));
         }
 
