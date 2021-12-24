@@ -100,6 +100,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "easycorp/easy-log-handler": {
+        "version": "v1.0.9"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -282,6 +285,9 @@
             "src/Kernel.php"
         ]
     },
+    "symfony/http-client": {
+        "version": "v5.3.11"
+    },
     "symfony/http-client-contracts": {
         "version": "v2.4.0"
     },
@@ -346,6 +352,9 @@
         "version": "v1.23.0"
     },
     "symfony/polyfill-php81": {
+        "version": "v1.23.0"
+    },
+    "symfony/polyfill-uuid": {
         "version": "v1.23.0"
     },
     "symfony/property-access": {
@@ -434,6 +443,9 @@
     },
     "symfony/twig-pack": {
         "version": "v1.0.1"
+    },
+    "symfony/uid": {
+        "version": "v5.3.10"
     },
     "symfony/validator": {
         "version": "4.3",
