@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    es_config: {'hosts': ['%env(ELASTIC_URL)%']}
 
 services:
     # default configuration for services in *this* file
@@ -26,4 +27,15 @@ services:
     App\Manager\CategoryManager:
         arguments:
             $logger: '@monolog.logger'
-    Symfony\Bridge\Monolog\Handler\ElasticsearchLogstashHandler: ~
+    #ELASTIC SEARCH CLIENT
+    Elasticsearch\Client:
+        factory: [ 'Elasticsearch\ClientBuilder', 'fromConfig' ]
+        arguments: [ '%es_config%' ]
+
+    Symfony\Bridge\Monolog\Handler\ElasticsearchLogstashHandler:
+        arguments:
+            $endpoint: '%env(ELASTIC_URL)%'
+
+    Monolog\Formatter\LogstashFormatter:
+        arguments:
+            $applicationName: 'symfony-elastic-stack'

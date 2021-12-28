@@ -25,6 +25,6 @@ monolog:
         easylog:
             type: service
             id: EasyCorp\EasyLog\EasyLogHandler
-        es:
-            type: service
-            id: Symfony\Bridge\Monolog\Handler\ElasticsearchLogstashHandler
+        # es:
+        #     type: service
+        #     id: Symfony\Bridge\Monolog\Handler\ElasticsearchLogstashHandler
