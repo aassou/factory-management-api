@@ -100,6 +100,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/uid" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/easycorp/easy-log-handler" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
