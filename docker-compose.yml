@@ -35,84 +35,84 @@ services:
       - factory-management
         # ipv4_address: 172.20.0.110
 
-  mysql_cont:
-    container_name: mysql_cont
-    image: "mysql:8.0.23"
-    environment: 
-      MYSQL_ROOT_PASSWORD: "mypassword"
-      MYSQL_DATABASE: "symfonyelk"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "mypassword"
-    ports: 
-      - "3307:3306"
-    volumes: 
-      - mysql_volume:/var/lib/mysql
-    hostname: mysql_cont
-    networks:
-      - factory-management
+  # mysql_cont:
+  #   container_name: mysql_cont
+  #   image: "mysql:8.0.23"
+  #   environment: 
+  #     MYSQL_ROOT_PASSWORD: "mypassword"
+  #     MYSQL_DATABASE: "symfonyelk"
+  #     MYSQL_USER: "user"
+  #     MYSQL_PASSWORD: "mypassword"
+  #   ports: 
+  #     - "3307:3306"
+  #   volumes: 
+  #     - mysql_volume:/var/lib/mysql
+  #   hostname: mysql_cont
+  #   networks:
+  #     - factory-management
         # ipv4_address: 172.20.0.120
 
-  elasticsearch:
-    container_name: elasticsearch
-    image: "docker.elastic.co/elasticsearch/elasticsearch:7.12.0"
-    environment:
-      - "discovery.type=single-node"
-      - "bootstrap.memory_lock=true"
-      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
-      - "xpack.security.enabled=false"
-      - "http.cors.enabled=true"
-      - "http.cors.allow-origin=*"
-    ports:
-      - 9201:9200
-    volumes:
-      - elastic_volume:/usr/share/elasticsearch/data
-    hostname: elasticsearch
-    networks:
-      - factory-management
+  # elasticsearch:
+  #   container_name: elasticsearch
+  #   image: "docker.elastic.co/elasticsearch/elasticsearch:7.12.0"
+  #   environment:
+  #     - "discovery.type=single-node"
+  #     - "bootstrap.memory_lock=true"
+  #     - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+  #     - "xpack.security.enabled=false"
+  #     - "http.cors.enabled=true"
+  #     - "http.cors.allow-origin=*"
+  #   ports:
+  #     - 9201:9200
+  #   volumes:
+  #     - elastic_volume:/usr/share/elasticsearch/data
+  #   hostname: elasticsearch
+  #   networks:
+  #     - factory-management
         # ipv4_address: 172.20.0.130
 
   #gather all logs from different sources and pass them to elastic-search in a proper format
-  logstash_cont:
-    container_name: logstash_cont
-    build: ./docker/logstash
+  # logstash_cont:
+  #   container_name: logstash_cont
+  #   build: ./docker/logstash
     #ports:
     #  - 5041:5044
-    depends_on:
-      - elasticsearch
-    hostname: logstash_cont
-    networks:
-      - factory-management
+    # depends_on:
+    #   - elasticsearch
+    # hostname: logstash_cont
+    # networks:
+    #   - factory-management
         # ipv4_address: 172.20.0.140
 
   #keep track of the symfony log file and send it to elastic search
-  filebeats_cont:
-    container_name: filebeats_cont
-    build: ./docker/filebeats
-    volumes:
-      - ./var/log:/var/log/symfony
-    depends_on:
-      - logstash_cont
-    hostname: filebeats_cont
-    networks:
-      - factory-management
+  # filebeats_cont:
+  #   container_name: filebeats_cont
+  #   build: ./docker/filebeats
+  #   volumes:
+  #     - ./var/log:/var/log/symfony
+  #   depends_on:
+  #     - logstash_cont
+  #   hostname: filebeats_cont
+  #   networks:
+  #     - factory-management
         # ipv4_address: 172.20.0.150
 
-  kibana_cont:
-    image: docker.elastic.co/kibana/kibana:7.12.0
-    container_name: kibana_cont
-    ports:
-      - 5602:5601
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
-    hostname: kibana_cont
-    networks:
-      - factory-management
+  # kibana_cont:
+  #   image: docker.elastic.co/kibana/kibana:7.12.0
+  #   container_name: kibana_cont
+  #   ports:
+  #     - 5602:5601
+  #   environment:
+  #     ELASTICSEARCH_URL: http://elasticsearch:9200
+  #     ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+  #   hostname: kibana_cont
+  #   networks:
+  #     - factory-management
         # ipv4_address: 172.20.0.160
 
-volumes:
-  mysql_volume:
-  elastic_volume:
+# volumes:
+#   mysql_volume:
+#   elastic_volume:
 
 
 
