@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
-class Product extends AbstractEntity
+#[ApiResource]
+class Product extends BasicEntity
 {
     /**
      * @ORM\Column(type="string", length=255)
@@ -54,6 +58,22 @@ class Product extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
      */
     private Category $category;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=CompanyOrder::class, mappedBy="products")
+     */
+    private $companyOrders;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=CustomerOrder::class, mappedBy="products")
+     */
+    private $customerOrders;
+
+    public function __construct()
+    {
+        $this->companyOrders = new ArrayCollection();
+        $this->customerOrders = new ArrayCollection();
+    }
 
     /**
      * @return string|null
@@ -222,6 +242,60 @@ class Product extends AbstractEntity
     public function setCategory(Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CompanyOrder[]
+     */
+    public function getCompanyOrders(): Collection
+    {
+        return $this->companyOrders;
+    }
+
+    public function addCompanyOrder(CompanyOrder $companyOrder): self
+    {
+        if (!$this->companyOrders->contains($companyOrder)) {
+            $this->companyOrders[] = $companyOrder;
+            $companyOrder->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompanyOrder(CompanyOrder $companyOrder): self
+    {
+        if ($this->companyOrders->removeElement($companyOrder)) {
+            $companyOrder->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CustomerOrder[]
+     */
+    public function getCustomerOrders(): Collection
+    {
+        return $this->customerOrders;
+    }
+
+    public function addCustomerOrder(CustomerOrder $customerOrder): self
+    {
+        if (!$this->customerOrders->contains($customerOrder)) {
+            $this->customerOrders[] = $customerOrder;
+            $customerOrder->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerOrder(CustomerOrder $customerOrder): self
+    {
+        if ($this->customerOrders->removeElement($customerOrder)) {
+            $customerOrder->removeProduct($this);
+        }
 
         return $this;
     }

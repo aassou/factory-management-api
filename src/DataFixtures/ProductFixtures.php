@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Product;
 use DateTime;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Faker\Factory;
@@ -13,7 +14,7 @@ use Faker\Factory;
  * @class ProductFixtures
  * @author Abdelilah Aassou <aassou.abdelilah@gmail.com>
  */
-class ProductFixtures extends AbstractFixtures
+class ProductFixtures extends AbstractFixtures implements DependentFixtureInterface
 {
 
     public const PRODUCT_REFERENCE = 'product';
@@ -64,8 +65,20 @@ class ProductFixtures extends AbstractFixtures
             if ($i % AbstractFixtures::MAX_SIZE_FLUSH === 0) {
                 $manager->flush();
             }
+
+            $this->addReference(self::PRODUCT_REFERENCE.$i, $product);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            CategoryFixtures::class
+        ];
     }
 }

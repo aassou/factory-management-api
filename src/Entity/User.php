@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @method string getUserIdentifier()
  * @UniqueEntity(fields="username", message="Username is already taken.")
  */
-class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends BasicEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Column(type="string", length=255, unique=true)
