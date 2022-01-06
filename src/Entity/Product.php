@@ -22,22 +22,22 @@ class Product extends BasicEntity
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private ?string $length;
+    private ?float $length;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private ?string $height;
+    private ?float $height;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private ?string $width;
+    private ?float $width;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private ?string $weight;
+    private ?float $weight;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -47,12 +47,12 @@ class Product extends BasicEntity
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private ?string $purchasePrice;
+    private ?float $purchasePrice;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
-    private ?string $salePrice;
+    private ?float $salePrice;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
@@ -96,18 +96,18 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getLength(): ?string
+    public function getLength(): ?float
     {
         return $this->length;
     }
 
     /**
-     * @param string|null $length
+     * @param float|null $length
      * @return $this
      */
-    public function setLength(?string $length): self
+    public function setLength(?float $length): self
     {
         $this->length = $length;
 
@@ -115,18 +115,18 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getHeight(): ?string
+    public function getHeight(): ?float
     {
         return $this->height;
     }
 
     /**
-     * @param string|null $height
+     * @param float|null $height
      * @return $this
      */
-    public function setHeight(?string $height): self
+    public function setHeight(?float $height): self
     {
         $this->height = $height;
 
@@ -134,18 +134,18 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getWidth(): ?string
+    public function getWidth(): ?float
     {
         return $this->width;
     }
 
     /**
-     * @param string|null $width
+     * @param float|null $width
      * @return $this
      */
-    public function setWidth(?string $width): self
+    public function setWidth(?float $width): self
     {
         $this->width = $width;
 
@@ -153,18 +153,18 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getWeight(): ?string
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
     /**
-     * @param string|null $weight
+     * @param float|null $weight
      * @return $this
      */
-    public function setWeight(?string $weight): self
+    public function setWeight(?float $weight): self
     {
         $this->weight = $weight;
 
@@ -191,18 +191,18 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getPurchasePrice(): ?string
+    public function getPurchasePrice(): ?float
     {
         return $this->purchasePrice;
     }
 
     /**
-     * @param string|null $purchasePrice
+     * @param float|null $purchasePrice
      * @return $this
      */
-    public function setPurchasePrice(?string $purchasePrice): self
+    public function setPurchasePrice(?float $purchasePrice): self
     {
         $this->purchasePrice = $purchasePrice;
 
@@ -210,18 +210,18 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getSalePrice(): ?string
+    public function getSalePrice(): ?float
     {
         return $this->salePrice;
     }
 
     /**
-     * @param string|null $salePrice
+     * @param float|null $salePrice
      * @return $this
      */
-    public function setSalePrice(?string $salePrice): self
+    public function setSalePrice(?float $salePrice): self
     {
         $this->salePrice = $salePrice;
 
@@ -278,7 +278,7 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return Collection|ExternalOrderLine[]
+     * @return Collection
      */
     public function getExternalOrderLines(): Collection
     {

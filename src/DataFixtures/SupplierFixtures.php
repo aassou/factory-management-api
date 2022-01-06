@@ -2,14 +2,14 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Customer;
+use App\Entity\Supplier;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class CustomerFixtures extends AbstractFixtures implements FixtureGroupInterface
+class SupplierFixtures extends AbstractFixtures implements FixtureGroupInterface
 {
-    public const CUSTOMER_REFERENCE = 'customer';
+    public const SUPPLIER_REFERENCE = 'supplier';
     public const MAX_LOOP = 10;
 
     /**
@@ -17,39 +17,36 @@ class CustomerFixtures extends AbstractFixtures implements FixtureGroupInterface
      */
     public function load(ObjectManager $manager)
     {
-        $this->loadCustomers($manager);
+        $this->loadSuppliers($manager);
     }
 
     /**
      * @param ObjectManager $manager
      */
-    private function loadCustomers(ObjectManager $manager)
+    private function loadSuppliers(ObjectManager $manager)
     {
         $faker = Factory::create();
 
         for ($i=0; $i<=self::MAX_LOOP; $i++) {
-            $customer = new Customer();
+            $supplier = new Supplier();
 
-            $customer->setName($faker->name);
-            $customer->setAddress($faker->address);
-            $customer->setPhone($faker->phoneNumber);
-            $customer->setNumber($faker->randomNumber().uniqid());
+            $supplier->setName($faker->name);
+            $supplier->setPhone($faker->phoneNumber);
+            $supplier->setAddress($faker->address);
+            $supplier->setNumber(uniqid());
 
-            $manager->persist($customer);
+            $manager->persist($supplier);
 
             if ($i % AbstractFixtures::MAX_SIZE_FLUSH === 0) {
                 $manager->flush();
             }
 
-            $this->addReference(self::CUSTOMER_REFERENCE . $i, $customer);
+            $this->addReference(self::SUPPLIER_REFERENCE . $i, $supplier);
         }
 
         $manager->flush();
     }
 
-    /**
-     * @return array
-     */
     public static function getGroups(): array
     {
         return [AbstractFixtures::FIXTURE_GROUP_ENABLED];

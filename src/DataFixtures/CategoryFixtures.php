@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use DateTime;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
@@ -11,10 +11,11 @@ use Faker\Factory;
  * @class CategoryFixtures
  * @author Abdelilah Aassou <aassou.abdelilah@gmail.com>
  */
-class CategoryFixtures extends AbstractFixtures
+class CategoryFixtures extends AbstractFixtures implements FixtureGroupInterface
 {
 
     public const CATEGORY_REFERENCE = 'category';
+    public const MAX_LOOP = 10;
 
     /**
      * @inheritDoc
@@ -30,7 +31,7 @@ class CategoryFixtures extends AbstractFixtures
     private function loadCategory(ObjectManager $manager) {
         $faker = Factory::create();
 
-        for ($i=0; $i<100; $i++) {
+        for ($i=0; $i<=self::MAX_LOOP; $i++) {
             $category = new Category();
 
             $category->setName($faker->ean13);
@@ -46,5 +47,13 @@ class CategoryFixtures extends AbstractFixtures
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return array
+     */
+    public static function getGroups(): array
+    {
+        return [AbstractFixtures::FIXTURE_GROUP_ENABLED];
     }
 }

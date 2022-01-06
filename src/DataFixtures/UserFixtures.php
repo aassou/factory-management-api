@@ -2,18 +2,16 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Entity\User;
-use DateTime;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @class CategoryFixtures
  * @author Abdelilah Aassou <aassou.abdelilah@gmail.com>
  */
-class UserFixtures extends AbstractFixtures
+class UserFixtures extends AbstractFixtures implements FixtureGroupInterface
 {
 
     public const USER_REFERENCE = 'user';
@@ -52,5 +50,13 @@ class UserFixtures extends AbstractFixtures
 
         $manager->persist($user);
         $manager->flush();
+    }
+
+    /**
+     * @return array
+     */
+    public static function getGroups(): array
+    {
+        return [AbstractFixtures::FIXTURE_GROUP_DISABLED];
     }
 }
