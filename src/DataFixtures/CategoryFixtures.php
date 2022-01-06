@@ -35,8 +35,6 @@ class CategoryFixtures extends AbstractFixtures
 
             $category->setName($faker->ean13);
             $category->setImage(AbstractFixtures::LOREM_IMAGE_URL);
-            $category->setCreated(new DateTime());
-            $category->setCreatedBy("aassou");
 
             $manager->persist($category);
 

@@ -15,39 +15,48 @@ use Doctrine\ORM\Mapping as ORM;
 class Customer extends Person
 {
     /**
-     * @ORM\OneToMany(targetEntity=CustomerOrder::class, mappedBy="customer")
+     * @ORM\OneToMany(targetEntity=ExternalOrder::class, mappedBy="customer")
      */
-    private ?Collection $customerOrders;
+    private ?Collection $externalOrders;
 
     public function __construct()
     {
-        $this->customerOrders = new ArrayCollection();
+        parent::__construct();
+        $this->externalOrders = new ArrayCollection();
     }
 
     /**
-     * @return Collection|CustomerOrder[]
+     * @return Collection|ExternalOrder[]
      */
-    public function getCustomerOrders(): Collection
+    public function getExternalOrders(): Collection
     {
-        return $this->customerOrders;
+        return $this->externalOrders;
     }
 
-    public function addCustomerOrder(CustomerOrder $customerOrder): self
+    /**
+     * @param ExternalOrder $externalOrder
+     * @return $this
+     */
+    public function addExternalOrder(ExternalOrder $externalOrder): self
     {
-        if (!$this->customerOrders->contains($customerOrder)) {
-            $this->customerOrders[] = $customerOrder;
-            $customerOrder->setCustomer($this);
+        if (!$this->externalOrders->contains($externalOrder)) {
+            $this->externalOrders[] = $externalOrder;
+            $externalOrder->setCustomer($this);
         }
 
         return $this;
     }
 
-    public function removeCustomerOrder(CustomerOrder $customerOrder): self
+    /**
+     * @param ExternalOrder $externalOrder
+     * @return $this
+     */
+    public function removeExternalOrder(ExternalOrder $externalOrder): self
     {
-        if ($this->customerOrders->removeElement($customerOrder)) {
+        if ($this->externalOrders->removeElement($externalOrder)) {
             // set the owning side to null (unless already changed)
-            if ($customerOrder->getCustomer() === $this) {
-                $customerOrder->setCustomer(null);
+            if ($externalOrder->getCustomer() === $this) {
+                $externalOrder->setCustomer(null);
             }
         }
 

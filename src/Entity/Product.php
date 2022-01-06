@@ -60,19 +60,20 @@ class Product extends BasicEntity
     private Category $category;
 
     /**
-     * @ORM\ManyToMany(targetEntity=CompanyOrder::class, mappedBy="products")
+     * @ORM\OneToMany(targetEntity=InternalOrderLine::class, mappedBy="product")
      */
-    private $companyOrders;
+    private ?Collection $internalOrderLines;
 
     /**
-     * @ORM\ManyToMany(targetEntity=CustomerOrder::class, mappedBy="products")
+     * @ORM\OneToMany(targetEntity=ExternalOrderLine::class, mappedBy="product")
      */
-    private $customerOrders;
+    private ?Collection $externalOrderLines;
 
     public function __construct()
     {
-        $this->companyOrders = new ArrayCollection();
-        $this->customerOrders = new ArrayCollection();
+        parent::__construct();
+        $this->internalOrderLines = new ArrayCollection();
+        $this->externalOrderLines = new ArrayCollection();
     }
 
     /**
@@ -247,54 +248,60 @@ class Product extends BasicEntity
     }
 
     /**
-     * @return Collection|CompanyOrder[]
+     * @return Collection|InternalOrderLine[]
      */
-    public function getCompanyOrders(): Collection
+    public function getInternalOrderLines(): Collection
     {
-        return $this->companyOrders;
+        return $this->internalOrderLines;
     }
 
-    public function addCompanyOrder(CompanyOrder $companyOrder): self
+    public function addInternalOrderLine(InternalOrderLine $internalOrderLine): self
     {
-        if (!$this->companyOrders->contains($companyOrder)) {
-            $this->companyOrders[] = $companyOrder;
-            $companyOrder->addProduct($this);
+        if (!$this->internalOrderLines->contains($internalOrderLine)) {
+            $this->internalOrderLines[] = $internalOrderLine;
+            $internalOrderLine->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeCompanyOrder(CompanyOrder $companyOrder): self
+    public function removeInternalOrderLine(InternalOrderLine $internalOrderLine): self
     {
-        if ($this->companyOrders->removeElement($companyOrder)) {
-            $companyOrder->removeProduct($this);
+        if ($this->internalOrderLines->removeElement($internalOrderLine)) {
+            // set the owning side to null (unless already changed)
+            if ($internalOrderLine->getProduct() === $this) {
+                $internalOrderLine->setProduct(null);
+            }
         }
 
         return $this;
     }
 
     /**
-     * @return Collection|CustomerOrder[]
+     * @return Collection|ExternalOrderLine[]
      */
-    public function getCustomerOrders(): Collection
+    public function getExternalOrderLines(): Collection
     {
-        return $this->customerOrders;
+        return $this->externalOrderLines;
     }
 
-    public function addCustomerOrder(CustomerOrder $customerOrder): self
+    public function addExternalOrderLine(ExternalOrderLine $externalOrderLine): self
     {
-        if (!$this->customerOrders->contains($customerOrder)) {
-            $this->customerOrders[] = $customerOrder;
-            $customerOrder->addProduct($this);
+        if (!$this->externalOrderLines->contains($externalOrderLine)) {
+            $this->externalOrderLines[] = $externalOrderLine;
+            $externalOrderLine->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeCustomerOrder(CustomerOrder $customerOrder): self
+    public function removeExternalOrderLine(ExternalOrderLine $externalOrderLine): self
     {
-        if ($this->customerOrders->removeElement($customerOrder)) {
-            $customerOrder->removeProduct($this);
+        if ($this->externalOrderLines->removeElement($externalOrderLine)) {
+            // set the owning side to null (unless already changed)
+            if ($externalOrderLine->getProduct() === $this) {
+                $externalOrderLine->setProduct(null);
+            }
         }
 
         return $this;

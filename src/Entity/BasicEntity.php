@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,6 +34,12 @@ class BasicEntity
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected ?string $updatedBy;
+
+    public function __construct()
+    {
+        $this->setCreatedBy('admin');
+        $this->setCreated(new DateTime());
+    }
 
     /**
      * @return int|null

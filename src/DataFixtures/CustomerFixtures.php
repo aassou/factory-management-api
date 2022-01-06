@@ -33,8 +33,6 @@ class CustomerFixtures extends AbstractFixtures
             $customer->setAddress($faker->address);
             $customer->setPhone($faker->phoneNumber);
             $customer->setNumber($faker->randomNumber().uniqid());
-            $customer->setCreatedBy('admin');
-            $customer->setCreated(new DateTime());
 
             $manager->persist($customer);
 

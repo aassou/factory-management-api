@@ -49,8 +49,6 @@ class UserFixtures extends AbstractFixtures
         $user->setPassword($this->encoder->hashPassword($user, '076757080'));
         $user->setProfil('admin');
         $user->setStatus(1);
-        $user->setCreated(new DateTime());
-        $user->setCreatedBy('admin');
 
         $manager->persist($user);
         $manager->flush();

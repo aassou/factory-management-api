@@ -15,39 +15,40 @@ use Doctrine\ORM\Mapping as ORM;
 class Supplier extends Person
 {
     /**
-     * @ORM\OneToMany(targetEntity=CompanyOrder::class, mappedBy="supplier")
+     * @ORM\OneToMany(targetEntity=InternalOrder::class, mappedBy="supplier")
      */
-    private ArrayCollection $companyOrders;
+    private ?Collection $internalOrders;
 
     public function __construct()
     {
-        $this->companyOrders = new ArrayCollection();
+        parent::__construct();
+        $this->internalOrders = new ArrayCollection();
     }
 
     /**
-     * @return Collection|CompanyOrder[]
+     * @return Collection|InternalOrder[]
      */
-    public function getCompanyOrders(): Collection
+    public function getInternalOrders(): Collection
     {
-        return $this->companyOrders;
+        return $this->internalOrders;
     }
 
-    public function addCompanyOrder(CompanyOrder $companyOrder): self
+    public function addInternalOrder(InternalOrder $internalOrder): self
     {
-        if (!$this->companyOrders->contains($companyOrder)) {
-            $this->companyOrders[] = $companyOrder;
-            $companyOrder->setSupplier($this);
+        if (!$this->internalOrders->contains($internalOrder)) {
+            $this->internalOrders[] = $internalOrder;
+            $internalOrder->setSupplier($this);
         }
 
         return $this;
     }
 
-    public function removeCompanyOrder(CompanyOrder $companyOrder): self
+    public function removeInternalOrder(InternalOrder $internalOrder): self
     {
-        if ($this->companyOrders->removeElement($companyOrder)) {
+        if ($this->internalOrders->removeElement($internalOrder)) {
             // set the owning side to null (unless already changed)
-            if ($companyOrder->getSupplier() === $this) {
-                $companyOrder->setSupplier(null);
+            if ($internalOrder->getSupplier() === $this) {
+                $internalOrder->setSupplier(null);
             }
         }
 

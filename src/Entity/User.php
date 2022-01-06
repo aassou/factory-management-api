@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -41,6 +42,7 @@ class User extends BasicEntity implements UserInterface, PasswordAuthenticatedUs
      */
     public function __construct(array $data = [])
     {
+        parent::__construct();
         $this->hydrate($data);
     }
     /**
@@ -50,7 +52,7 @@ class User extends BasicEntity implements UserInterface, PasswordAuthenticatedUs
      */
     public function onPreUpdate()
     {
-        $this->updated = new \DateTime("now");
+        $this->updated = new DateTime("now");
     }
 
     public function getId(): ?int

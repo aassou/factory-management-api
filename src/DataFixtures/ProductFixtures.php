@@ -46,8 +46,6 @@ class ProductFixtures extends AbstractFixtures implements DependentFixtureInterf
             $product->setPurchasePrice($faker->randomFloat(2, 1, 100));
             $product->setSalePrice($faker->randomFloat(2, 1, 100));
             $product->setImage(AbstractFixtures::LOREM_IMAGE_URL);
-            $product->setCreated(new DateTime());
-            $product->setCreatedBy("aassou");
 
             $categoryReferenceIndex = CategoryFixtures::CATEGORY_REFERENCE.rand(0, 99);
 

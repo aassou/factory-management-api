@@ -7,29 +7,32 @@ use Doctrine\ORM\Mapping as ORM;
 class Order extends BasicEntity
 {
     /**
+     * @var string
+     * @ORM\Column(type="string", length=255)
+     */
+    protected string $reference;
+
+    /**
+     * @var string
      * @ORM\Column(type="text")
      */
     protected string $description;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @return string
      */
-    protected float $quantity;
+    public function getReference(): string
+    {
+        return $this->reference;
+    }
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @param string $reference
      */
-    protected float $unitPrice;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
-     */
-    protected float $negotiableUnitPrice;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
-     */
-    protected float $finalTotlaPrice;
+    public function setReference(string $reference): void
+    {
+        $this->reference = $reference;
+    }
 
     /**
      * @return string
@@ -45,69 +48,5 @@ class Order extends BasicEntity
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQuantity(): float
-    {
-        return $this->quantity;
-    }
-
-    /**
-     * @param float $quantity
-     */
-    public function setQuantity(float $quantity): void
-    {
-        $this->quantity = $quantity;
-    }
-
-    /**
-     * @return float
-     */
-    public function getUnitPrice(): float
-    {
-        return $this->unitPrice;
-    }
-
-    /**
-     * @param float $unitPrice
-     */
-    public function setUnitPrice(float $unitPrice): void
-    {
-        $this->unitPrice = $unitPrice;
-    }
-
-    /**
-     * @return float
-     */
-    public function getNegotiableUnitPrice(): float
-    {
-        return $this->negotiableUnitPrice;
-    }
-
-    /**
-     * @param float $negotiableUnitPrice
-     */
-    public function setNegotiableUnitPrice(float $negotiableUnitPrice): void
-    {
-        $this->negotiableUnitPrice = $negotiableUnitPrice;
-    }
-
-    /**
-     * @return float
-     */
-    public function getFinalTotlaPrice(): float
-    {
-        return $this->finalTotlaPrice;
-    }
-
-    /**
-     * @param float $finalTotlaPrice
-     */
-    public function setFinalTotlaPrice(float $finalTotlaPrice): void
-    {
-        $this->finalTotlaPrice = $finalTotlaPrice;
     }
 }
