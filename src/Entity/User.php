@@ -2,38 +2,48 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @method string getUserIdentifier()
  * @UniqueEntity(fields="username", message="Username is already taken.")
  */
+#[ApiResource(attributes: [
+    'normalization_context' => ['groups' => ['read']],
+    'denormalization_context' => ['groups' => ['write']],
+])]
 class User extends BasicEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
+    #[Groups(["read", "write"])]
     private ?string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["write"])]
     private ?string $password;
 
     /**
      * @ORM\Column(type="string", length=30)
      */
+    #[Groups(["read", "write"])]
     private ?string $profil;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
+    #[Groups(["read", "write"])]
     private ?int $status;
 
 

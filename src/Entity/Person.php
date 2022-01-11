@@ -12,17 +12,17 @@ class Person extends BasicEntity
     protected string $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected string $phone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected string $address;
 
     /**
-     * @ORM\Column(type="string", length=255, unique="true")
+     * @ORM\Column(type="string", length=255, unique="true", nullable=true)
      */
     protected string $number;
 
