@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class BasicEntity
 {
@@ -13,26 +14,31 @@ class BasicEntity
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["read", "write"])]
     protected ?int $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(["read", "write"])]
     protected ?DateTimeInterface $created;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read", "write"])]
     protected ?string $createdBy;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[Groups(["read", "write"])]
     protected ?DateTimeInterface $updated;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(["read", "write"])]
     protected ?string $updatedBy;
 
     public function __construct()

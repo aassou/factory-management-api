@@ -12,6 +12,5 @@ api_platform:
             mime_types: [ 'application/json' ]
         html:
             mime_types: [ 'text/html' ]
-    collection:
-        pagination:
-            items_per_page: 10
+    defaults:
+        pagination_items_per_page: 10

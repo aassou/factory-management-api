@@ -57,6 +57,6 @@ class UserFixtures extends AbstractFixtures implements FixtureGroupInterface
      */
     public static function getGroups(): array
     {
-        return [AbstractFixtures::FIXTURE_GROUP_DISABLED];
+        return [AbstractFixtures::FIXTURE_GROUP_ENABLED];
     }
 }
