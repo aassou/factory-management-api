@@ -62,9 +62,42 @@ class UserController extends AbstractController
         $user = $this->userManager->register($data, $encoder, $this->getUser()->getUsername());
 
         return $this->json([
-            'message' => sprintf('Saved new user with login %s', $user->getUsername())
+            'message' => sprintf(
+                'Utilisateur %s créée avec succès!',
+                ucfirst($user->getUsername())
+            )
         ]);
     }
+
+    /**
+     * @return JsonResponse
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    #[Route("/api/user/current", name: 'current_user', methods: ['GET'])]
+    public function getCurrentUser(): JsonResponse
+    {
+        if (!$this->container->has('security.token_storage')) {
+            throw new \LogicException('The Security Bundle is not registered in your application.');
+        }
+
+        $token = $this->container->get('security.token_storage')->getToken();
+        if (null === $token) {
+            return $this->json([]);
+        }
+
+        $user = $token->getUser();
+
+        if (!is_object($user)) {
+            return $this->json([]);
+        }
+
+        return $this->json(['user' => $user]);
+    }
+//    public function getCurrentUser(): JsonResponse
+//    {
+//        return $this->json(["current_user" => $this->getUser()->getUserIdentifier()]);
+//    }
 
     /**
      * Get one user.
@@ -131,7 +164,7 @@ class UserController extends AbstractController
     #[Route('/api/checktoken')]
     public function checkToken(): JsonResponse
     {
+        $this->getUser()->getUserIdentifier();
         return $this->json(['message' => 'token is valid']);
     }
-
 }

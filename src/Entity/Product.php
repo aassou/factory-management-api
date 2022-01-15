@@ -20,22 +20,22 @@ class Product extends BasicEntity
     private ?string $reference;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
     private ?float $length;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
     private ?float $height;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
     private ?float $width;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
     private ?float $weight;
 
@@ -45,12 +45,12 @@ class Product extends BasicEntity
     private ?string $image;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
     private ?float $purchasePrice;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
     private ?float $salePrice;
 
