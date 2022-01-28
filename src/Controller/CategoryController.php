@@ -74,6 +74,23 @@ class CategoryController extends AbstractController implements CrudControllerInt
     }
 
     /**
+     * @param string $query
+     * @return JsonResponse
+     */
+    #[Route('/api/category/search/{query}', name: 'category_search', methods: ['GET'])]
+    public function searchByCategoryName(string $query) : JsonResponse
+    {
+        $categories = $this->categoryManager->searchByCategoryName($query);
+
+        /* if (!$category) {
+            $this->logger->error(sprintf("Category %s not found", $category));
+            throw new NotFoundHttpException(sprintf("Category %s not found", $category));
+        } */
+
+        return $this->json($categories);
+    }
+
+    /**
      * Get one category.
      *
      * This call get one category by id.
