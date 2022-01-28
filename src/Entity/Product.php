@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
-class Product extends AbstractEntity
+#[ApiResource]
+class Product extends BasicEntity
 {
     /**
      * @ORM\Column(type="string", length=255)
@@ -16,24 +20,24 @@ class Product extends AbstractEntity
     private ?string $reference;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
-    private ?string $length;
+    private ?float $length;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
-    private ?string $height;
+    private ?float $height;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
-    private ?string $width;
+    private ?float $width;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
-    private ?string $weight;
+    private ?float $weight;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -41,19 +45,36 @@ class Product extends AbstractEntity
     private ?string $image;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
-    private ?string $purchasePrice;
+    private ?float $purchasePrice;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(type="float", precision=10, scale=2, nullable=true)
      */
-    private ?string $salePrice;
+    private ?float $salePrice;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
      */
     private Category $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InternalOrderLine::class, mappedBy="product")
+     */
+    private ?Collection $internalOrderLines;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ExternalOrderLine::class, mappedBy="product")
+     */
+    private ?Collection $externalOrderLines;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->internalOrderLines = new ArrayCollection();
+        $this->externalOrderLines = new ArrayCollection();
+    }
 
     /**
      * @return string|null
@@ -75,18 +96,18 @@ class Product extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getLength(): ?string
+    public function getLength(): ?float
     {
         return $this->length;
     }
 
     /**
-     * @param string|null $length
+     * @param float|null $length
      * @return $this
      */
-    public function setLength(?string $length): self
+    public function setLength(?float $length): self
     {
         $this->length = $length;
 
@@ -94,18 +115,18 @@ class Product extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getHeight(): ?string
+    public function getHeight(): ?float
     {
         return $this->height;
     }
 
     /**
-     * @param string|null $height
+     * @param float|null $height
      * @return $this
      */
-    public function setHeight(?string $height): self
+    public function setHeight(?float $height): self
     {
         $this->height = $height;
 
@@ -113,18 +134,18 @@ class Product extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getWidth(): ?string
+    public function getWidth(): ?float
     {
         return $this->width;
     }
 
     /**
-     * @param string|null $width
+     * @param float|null $width
      * @return $this
      */
-    public function setWidth(?string $width): self
+    public function setWidth(?float $width): self
     {
         $this->width = $width;
 
@@ -132,18 +153,18 @@ class Product extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getWeight(): ?string
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
     /**
-     * @param string|null $weight
+     * @param float|null $weight
      * @return $this
      */
-    public function setWeight(?string $weight): self
+    public function setWeight(?float $weight): self
     {
         $this->weight = $weight;
 
@@ -170,18 +191,18 @@ class Product extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getPurchasePrice(): ?string
+    public function getPurchasePrice(): ?float
     {
         return $this->purchasePrice;
     }
 
     /**
-     * @param string|null $purchasePrice
+     * @param float|null $purchasePrice
      * @return $this
      */
-    public function setPurchasePrice(?string $purchasePrice): self
+    public function setPurchasePrice(?float $purchasePrice): self
     {
         $this->purchasePrice = $purchasePrice;
 
@@ -189,18 +210,18 @@ class Product extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getSalePrice(): ?string
+    public function getSalePrice(): ?float
     {
         return $this->salePrice;
     }
 
     /**
-     * @param string|null $salePrice
+     * @param float|null $salePrice
      * @return $this
      */
-    public function setSalePrice(?string $salePrice): self
+    public function setSalePrice(?float $salePrice): self
     {
         $this->salePrice = $salePrice;
 
@@ -222,6 +243,66 @@ class Product extends AbstractEntity
     public function setCategory(Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InternalOrderLine[]
+     */
+    public function getInternalOrderLines(): Collection
+    {
+        return $this->internalOrderLines;
+    }
+
+    public function addInternalOrderLine(InternalOrderLine $internalOrderLine): self
+    {
+        if (!$this->internalOrderLines->contains($internalOrderLine)) {
+            $this->internalOrderLines[] = $internalOrderLine;
+            $internalOrderLine->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInternalOrderLine(InternalOrderLine $internalOrderLine): self
+    {
+        if ($this->internalOrderLines->removeElement($internalOrderLine)) {
+            // set the owning side to null (unless already changed)
+            if ($internalOrderLine->getProduct() === $this) {
+                $internalOrderLine->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getExternalOrderLines(): Collection
+    {
+        return $this->externalOrderLines;
+    }
+
+    public function addExternalOrderLine(ExternalOrderLine $externalOrderLine): self
+    {
+        if (!$this->externalOrderLines->contains($externalOrderLine)) {
+            $this->externalOrderLines[] = $externalOrderLine;
+            $externalOrderLine->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExternalOrderLine(ExternalOrderLine $externalOrderLine): self
+    {
+        if ($this->externalOrderLines->removeElement($externalOrderLine)) {
+            // set the owning side to null (unless already changed)
+            if ($externalOrderLine->getProduct() === $this) {
+                $externalOrderLine->setProduct(null);
+            }
+        }
 
         return $this;
     }

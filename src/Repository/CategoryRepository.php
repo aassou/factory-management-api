@@ -36,6 +36,21 @@ class CategoryRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+     * @param $value
+     * @return array
+     */
+    public function findByKeyword($value): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.name LIKE :name')
+            ->setParameter('name', '%'.$value.'%')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Category
     {

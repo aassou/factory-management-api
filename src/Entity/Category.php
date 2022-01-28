@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
-class Category extends AbstractEntity
+#[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
+class Category extends BasicEntity
 {
     /**
      * @ORM\Column(type="string", length=255)

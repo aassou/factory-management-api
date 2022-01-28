@@ -64,6 +64,24 @@ class CategoryManager extends AbstractManager
     }
 
     /**
+     * @param string $query
+     * @return array
+     */
+    public function searchByCategoryName(string $query): array
+    {
+        /** @var CategoryRepository $repository */
+        $repository = $this->entityManager->getRepository(Category::class);
+
+        /** @var Category[] $categories */
+        /* if (!$category) {
+            $this->logger->error(sprintf('Category %s not found!', $query));
+            throw new CategoryNotFoundException(sprintf('Category %s not found!', $query));
+        } */
+
+        return $repository->findByKeyword($query);
+    }
+
+    /**
      * @param int $id
      * @return Category
      * @throws CategoryNotFoundException

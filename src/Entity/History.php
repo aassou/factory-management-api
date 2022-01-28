@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\HistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=HistoryRepository::class)
  */
-class History extends AbstractEntity
+#[ApiResource]
+class History extends BasicEntity
 {
     /**
      * @ORM\Column(type="string", length=255)
