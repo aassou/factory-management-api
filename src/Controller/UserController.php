@@ -13,10 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Annotations as OA;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use App\Entity\User;
 
 /**
  * UserController
@@ -42,16 +38,6 @@ class UserController extends AbstractController
      * Welcome message for connected user.
      *
      * This call show a message for a connected user.
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns a simple message",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=User::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Tag(name="user")
-     * @Security(name="Bearer")
      * @return JsonResponse
      */
     #[Route('/api/user', name: 'user_index', methods: ['GET'])]
@@ -65,28 +51,6 @@ class UserController extends AbstractController
      * Create a new user.
      *
      * This call creates a new user.
-     *
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="User attributes",
-     *    @OA\JsonContent(
-     *       required={"username","password", "profil", "status"},
-     *       @OA\Property(property="username", type="string", format="string", example="amin"),
-     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *       @OA\Property(property="profil", type="string", example="admin"),
-     *       @OA\Property(property="status", type="int", example="1")
-     *    ),
-     * ),
-     * @OA\Response(
-     *     response=200,
-     *     description="Creates a user",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=User::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Tag(name="user")
-     * @Security(name="Bearer")
      * @param Request $request
      * @param UserPasswordHasherInterface $encoder
      * @return JsonResponse
@@ -98,24 +62,47 @@ class UserController extends AbstractController
         $user = $this->userManager->register($data, $encoder, $this->getUser()->getUsername());
 
         return $this->json([
-            'message' => sprintf('Saved new user with login %s', $user->getUsername())
+            'message' => sprintf(
+                'Utilisateur %s créée avec succès!',
+                ucfirst($user->getUsername())
+            )
         ]);
     }
+
+    /**
+     * @return JsonResponse
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    #[Route("/api/user/current", name: 'current_user', methods: ['GET'])]
+    public function getCurrentUser(): JsonResponse
+    {
+        if (!$this->container->has('security.token_storage')) {
+            throw new \LogicException('The Security Bundle is not registered in your application.');
+        }
+
+        $token = $this->container->get('security.token_storage')->getToken();
+        if (null === $token) {
+            return $this->json([]);
+        }
+
+        $user = $token->getUser();
+
+        if (!is_object($user)) {
+            return $this->json([]);
+        }
+
+        return $this->json(['user' => $user]);
+    }
+//    public function getCurrentUser(): JsonResponse
+//    {
+//        return $this->json(["current_user" => $this->getUser()->getUserIdentifier()]);
+//    }
 
     /**
      * Get one user.
      *
      * This call get one user by id.
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns a user by id",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=User::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Tag(name="user")
-     * @Security(name="Bearer")
      * @param int $id
      * @return JsonResponse
      * @throws UserNotFoundException
@@ -137,33 +124,6 @@ class UserController extends AbstractController
      * Update an existing user.
      *
      * This call creates a new user.
-     *
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="User attributes",
-     *    @OA\JsonContent(
-     *       required={"username", "profil", "status"},
-     *       @OA\Property(property="username", type="string", format="string", example="amin"),
-     *       @OA\Property(property="profil", type="string", example="admin"),
-     *       @OA\Property(property="status", type="int", example="1")
-     *    ),
-     * ),
-     * @OA\Response(
-     *     response=200,
-     *     description="Updates an exisiting user",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=User::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="The field used to select user",
-     *     @OA\Schema(type="int")
-     * )
-     * @OA\Tag(name="user")
-     * @Security(name="Bearer")
      * @param Request $request
      * @param int $id
      * @return JsonResponse
@@ -199,22 +159,12 @@ class UserController extends AbstractController
      * check token validity.
      *
      * This call checks the validity of token.
-     * @OA\Response(
-     *     response=200,
-     *     description="Checks token validity",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=User::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Tag(name="user")
-     * @Security(name="Bearer")
      * @return JsonResponse
      */
     #[Route('/api/checktoken')]
     public function checkToken(): JsonResponse
     {
+        $this->getUser()->getUserIdentifier();
         return $this->json(['message' => 'token is valid']);
     }
-
 }

@@ -1,4 +1,18 @@
 {
+    "api-platform/core": {
+        "version": "2.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "05b57782a78c21a664a42055dc11cf1954ca36bb"
+        },
+        "files": [
+            "config/packages/api_platform.yaml",
+            "config/routes/api_platform.yaml",
+            "src/Entity/.gitignore"
+        ]
+    },
     "beberlei/doctrineextensions": {
         "version": "v1.3.0"
     },
@@ -103,6 +117,9 @@
     "easycorp/easy-log-handler": {
         "version": "v1.0.9"
     },
+    "fig/link-util": {
+        "version": "1.2.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -142,19 +159,6 @@
     "namshi/jose": {
         "version": "7.2.3"
     },
-    "nelmio/api-doc-bundle": {
-        "version": "3.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "3.0",
-            "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
-        },
-        "files": [
-            "config/packages/nelmio_api_doc.yaml",
-            "config/routes/nelmio_api_doc.yaml"
-        ]
-    },
     "nelmio/cors-bundle": {
         "version": "1.5",
         "recipe": {
@@ -187,6 +191,9 @@
     },
     "psr/event-dispatcher": {
         "version": "1.0.0"
+    },
+    "psr/link": {
+        "version": "1.1.1"
     },
     "psr/log": {
         "version": "1.1.4"
@@ -247,6 +254,9 @@
     },
     "symfony/event-dispatcher-contracts": {
         "version": "v2.4.0"
+    },
+    "symfony/expression-language": {
+        "version": "v5.3.11"
     },
     "symfony/filesystem": {
         "version": "v5.3.0"
@@ -323,12 +333,6 @@
             "config/packages/prod/monolog.yaml",
             "config/packages/test/monolog.yaml"
         ]
-    },
-    "symfony/options-resolver": {
-        "version": "v5.3.7"
-    },
-    "symfony/orm-pack": {
-        "version": "v2.1.0"
     },
     "symfony/password-hasher": {
         "version": "v5.3.0"
@@ -410,9 +414,6 @@
     "symfony/serializer": {
         "version": "v5.3.4"
     },
-    "symfony/serializer-pack": {
-        "version": "v1.0.4"
-    },
     "symfony/service-contracts": {
         "version": "v2.4.0"
     },
@@ -441,9 +442,6 @@
             "templates/base.html.twig"
         ]
     },
-    "symfony/twig-pack": {
-        "version": "v1.0.1"
-    },
     "symfony/uid": {
         "version": "v5.3.10"
     },
@@ -466,6 +464,9 @@
     "symfony/var-exporter": {
         "version": "v5.3.0"
     },
+    "symfony/web-link": {
+        "version": "v5.3.4"
+    },
     "symfony/yaml": {
         "version": "v5.3.0"
     },
@@ -478,7 +479,7 @@
     "webmozart/assert": {
         "version": "1.10.0"
     },
-    "zircote/swagger-php": {
-        "version": "3.3.2"
+    "willdurand/negotiation": {
+        "version": "3.0.0"
     }
 }

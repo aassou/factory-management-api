@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Exception\CategoryNotFoundException;
 use App\Manager\CategoryManager;
 use App\Entity\Category;
-use Psr\Log\LoggerAwareInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,9 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Annotations as OA;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
 
 /**
  * CategoryController
@@ -49,16 +45,6 @@ class CategoryController extends AbstractController implements CrudControllerInt
      * Get all categories.
      *
      * This call get all the categories for a connected user.
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns all categories",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Category::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Tag(name="category")
-     * @Security(name="Bearer")
      * @return JsonResponse
      */
     #[Route('/api/category', name: 'category_index', methods: ['GET'])]
@@ -75,25 +61,6 @@ class CategoryController extends AbstractController implements CrudControllerInt
      *
      * This call creates a new category.
      *
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Category attributes",
-     *    @OA\JsonContent(
-     *       required={"name"},
-     *       @OA\Property(property="name", type="string", format="string", example="metal"),
-     *       @OA\Property(property="image", type="string", format="string", example="https://loremflickr.com/320/240/product"),
-     *    ),
-     * ),
-     * @OA\Response(
-     *     response=200,
-     *     description="Creates new category",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Category::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Tag(name="category")
-     * @Security(name="Bearer")
      * @param Request $request
      * @return JsonResponse
      */
@@ -107,19 +74,26 @@ class CategoryController extends AbstractController implements CrudControllerInt
     }
 
     /**
+     * @param string $query
+     * @return JsonResponse
+     */
+    #[Route('/api/category/search/{query}', name: 'category_search', methods: ['GET'])]
+    public function searchByCategoryName(string $query) : JsonResponse
+    {
+        $categories = $this->categoryManager->searchByCategoryName($query);
+
+        /* if (!$category) {
+            $this->logger->error(sprintf("Category %s not found", $category));
+            throw new NotFoundHttpException(sprintf("Category %s not found", $category));
+        } */
+
+        return $this->json($categories);
+    }
+
+    /**
      * Get one category.
      *
      * This call get one category by id.
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns a category by id",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Category::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Tag(name="category")
-     * @Security(name="Bearer")
      * @param int $id
      * @return JsonResponse
      * @throws CategoryNotFoundException
@@ -141,32 +115,6 @@ class CategoryController extends AbstractController implements CrudControllerInt
      * Update an existing category.
      *
      * This call updates an existing category.
-     *
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Category attributes",
-     *    @OA\JsonContent(
-     *       required={"name"},
-     *       @OA\Property(property="name", type="string", format="string", example="metal"),
-     *       @OA\Property(property="image", type="string", format="string", example="https://loremflickr.com/320/240/product"),
-     *    ),
-     * ),
-     * @OA\Response(
-     *     response=200,
-     *     description="Updates an exisiting category",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Category::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="The field used to select category",
-     *     @OA\Schema(type="int")
-     * )
-     * @OA\Tag(name="category")
-     * @Security(name="Bearer")
      * @param Request $request
      * @param int $id
      * @return JsonResponse
@@ -177,7 +125,7 @@ class CategoryController extends AbstractController implements CrudControllerInt
     {
         $data = json_decode($request->getContent(), true);
         $category = $this->categoryManager->update($data, $this->getUser()->getUsername()(), $id);
-        dd($this->get('kernel'));
+
         if (!$category) {
             $this->logger->error(sprintf('Salam 3alikom %s', $id));
             throw new NotFoundHttpException(sprintf('Category with id: %s not found!', $id));
@@ -190,23 +138,6 @@ class CategoryController extends AbstractController implements CrudControllerInt
      * Delete a category.
      *
      * This call deletes a category.
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Deletes a category",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Category::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="The field used to select category",
-     *     @OA\Schema(type="int")
-     * )
-     * @OA\Tag(name="category")
-     * @Security(name="Bearer")
      * @param int $id
      * @return JsonResponse
      * @throws CategoryNotFoundException

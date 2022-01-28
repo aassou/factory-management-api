@@ -4,7 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Product;
-use DateTime;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Faker\Factory;
@@ -13,10 +14,11 @@ use Faker\Factory;
  * @class ProductFixtures
  * @author Abdelilah Aassou <aassou.abdelilah@gmail.com>
  */
-class ProductFixtures extends AbstractFixtures
+class ProductFixtures extends AbstractFixtures implements DependentFixtureInterface, FixtureGroupInterface
 {
 
     public const PRODUCT_REFERENCE = 'product';
+    public const MAX_LOOP = 10;
 
     /**
      * @param ObjectManager $manager
@@ -34,7 +36,7 @@ class ProductFixtures extends AbstractFixtures
     private function loadProducts(ObjectManager $manager) {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i <= self::MAX_LOOP; $i++) {
             $product = new Product();
 
             $product->setReference($faker->ean8);
@@ -45,10 +47,9 @@ class ProductFixtures extends AbstractFixtures
             $product->setPurchasePrice($faker->randomFloat(2, 1, 100));
             $product->setSalePrice($faker->randomFloat(2, 1, 100));
             $product->setImage(AbstractFixtures::LOREM_IMAGE_URL);
-            $product->setCreated(new DateTime());
-            $product->setCreatedBy("aassou");
 
-            $categoryReferenceIndex = CategoryFixtures::CATEGORY_REFERENCE.rand(0, 99);
+            $categoryReferenceIndex =
+                CategoryFixtures::CATEGORY_REFERENCE.rand(1, CategoryFixtures::MAX_LOOP);
 
             /** @var Category $category */
             $category = $this->getReference($categoryReferenceIndex);
@@ -64,8 +65,28 @@ class ProductFixtures extends AbstractFixtures
             if ($i % AbstractFixtures::MAX_SIZE_FLUSH === 0) {
                 $manager->flush();
             }
+
+            $this->addReference(self::PRODUCT_REFERENCE.$i, $product);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            CategoryFixtures::class
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getGroups(): array
+    {
+        return [AbstractFixtures::FIXTURE_GROUP_ENABLED];
     }
 }
