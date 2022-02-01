@@ -1,9 +1,11 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name factory.org server_ip;
 
-    root /var/www/html/factory.org/public;
+    server_name factory-management-api 18.196.80.68;
+
+    root /var/www/html/factory-management-api/public;
+
     index index.php;
     client_max_body_size 100m;
 
