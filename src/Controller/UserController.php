@@ -164,17 +164,6 @@ class UserController extends AbstractController
     #[Route('/api/checktoken')]
     public function checkToken(): JsonResponse
     {
-        $this->getUser()->getUserIdentifier();
-
-        $response = new JsonResponse();
-
-        $response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $this->json(
-            ['message' => 'token is valid'],
-            200,
-            ['Content-Type' => 'application/json', 'Access-Control-Allow-Origin' => '*']
-        );
+        return $this->json(['message' => 'token is valid']);
     }
 }
